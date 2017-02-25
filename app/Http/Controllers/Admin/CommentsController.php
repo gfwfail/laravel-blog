@@ -18,78 +18,15 @@ class CommentsController extends Controller
      */
     public function index(Request $request)
     {
-        $keyword = $request->get('search');
-        $perPage = 25;
-
-        if (!empty($keyword)) {
-            $comments = Comment::where('content', 'LIKE', "%$keyword%")
-				->orWhere('user', 'LIKE', "%$keyword%")
-				->orWhere('post', 'LIKE', "%$keyword%")
-				
-                ->paginate($perPage);
-        } else {
-            $comments = Comment::paginate($perPage);
-        }
+        $comments = Auth()->user()->comments()->paginate(20);
 
         return view('admin.comments.index', compact('comments'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\View\View
-     */
-    public function create()
-    {
-        return view('admin.comments.create');
-    }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     *
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
-     */
-    public function store(Request $request)
-    {
-        
-        $requestData = $request->all();
-        
-        Comment::create($requestData);
 
-        Session::flash('flash_message', 'Comment added!');
 
-        return redirect('admin/comments');
-    }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     *
-     * @return \Illuminate\View\View
-     */
-    public function show($id)
-    {
-        $comment = Comment::findOrFail($id);
-
-        return view('admin.comments.show', compact('comment'));
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     *
-     * @return \Illuminate\View\View
-     */
-    public function edit($id)
-    {
-        $comment = Comment::findOrFail($id);
-
-        return view('admin.comments.edit', compact('comment'));
-    }
 
     /**
      * Update the specified resource in storage.
@@ -104,12 +41,12 @@ class CommentsController extends Controller
         
         $requestData = $request->all();
         
-        $comment = Comment::findOrFail($id);
+        $comment = Auth()->user()->comments()->findOrFail($id);
         $comment->update($requestData);
 
         Session::flash('flash_message', 'Comment updated!');
 
-        return redirect('admin/comments');
+        return redirect()->back();
     }
 
     /**
@@ -125,6 +62,6 @@ class CommentsController extends Controller
 
         Session::flash('flash_message', 'Comment deleted!');
 
-        return redirect('admin/comments');
+        return redirect()->back();
     }
 }

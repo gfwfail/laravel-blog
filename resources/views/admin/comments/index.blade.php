@@ -14,15 +14,15 @@
                             <table class="table table-borderless">
                                 <thead>
                                     <tr>
-                                        <th>ID</th><th>Content</th><th>User</th><th>Post</th>
+                                        <th>ID</th><th>Content</th><th>Created Time</th><th>Post</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                 @foreach($comments as $item)
                                     <tr>
                                         <td>{{ $item->id }}</td>
-                                        <td>{{ $item->content }}</td><td>{{ $item->user }}</td><td>{{ $item->post }}</td>
-
+                                        <td>{{ $item->content }}</td><td>{{ $item->created_at }}</td><td>   <a href="/posts/{{$item->post->id}}">{{ $item->post->title }}</td></a>
+                                        </td>
                                     </tr>
                                 @endforeach
                                 </tbody>

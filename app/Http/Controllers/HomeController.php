@@ -17,4 +17,11 @@ class HomeController extends Controller
 
         return view('home',compact('posts'));
     }
+
+    public function showPost($id)
+    {
+        $post = Post::findOrFail($id);
+
+        return view('show',compact('post'));
+    }
 }

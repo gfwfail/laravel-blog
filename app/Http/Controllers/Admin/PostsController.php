@@ -54,6 +54,20 @@ class PostsController extends Controller
         return redirect('admin/posts');
     }
 
+    public function addComment(Request $request,Post $post)
+    {
+
+        $requestData = $request->only(['content']);
+
+        $requestData['user_id']= auth()->user()->id;
+
+        $post->comments()->create($requestData);
+
+        Session::flash('flash_message', 'Comment added!');
+
+        return redirect()->back();
+    }
+
     /**
      * Display the specified resource.
      *

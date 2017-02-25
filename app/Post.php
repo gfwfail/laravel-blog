@@ -36,5 +36,11 @@ class Post extends Model
     {
         return $this->belongsTo(\App\User::class);
     }
-	
+
+    public function getCategoryAttribute($value)
+    {
+        $CATEGORY = ['Tech','Life','Others'];
+        return (array_key_exists($value,$CATEGORY))?$CATEGORY[$value]:'Others';
+
+    }
 }

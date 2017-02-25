@@ -25,8 +25,21 @@ class Comment extends Model
      *
      * @var array
      */
-    protected $fillable = ['content'];
+    protected $fillable = ['content','user_id'];
 
+    public function user()
+    {
+        return $this->belongsTo(\App\User::class);
+    }
 
-    
+    public function post()
+    {
+        return $this->belongsTo(\App\Post::class);
+    }
+
+    public function isMine()
+    {
+        return !auth()->check()? false : (auth()->user()->id == $this->user_id);
+
+    }
 }

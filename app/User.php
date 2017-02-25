@@ -27,8 +27,22 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    public function getAvatarAttribute($value)
+    {
+        if (!$value){
+            return 'https://www.gravatar.com/avatar/' . md5( strtolower( trim( $this->email ) ) ).'?s=30';
+        } else {
+            return '/'.$value;
+        }
+    }
+
     public function posts()
     {
         return $this->hasMany(\App\Post::class);
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(\App\Comment::class);
     }
 }
