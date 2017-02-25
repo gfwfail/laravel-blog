@@ -6,6 +6,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use App\Post;
+use App\User;
 use Illuminate\Http\Request;
 use Session;
 
@@ -18,19 +19,8 @@ class PostsController extends Controller
      */
     public function index(Request $request)
     {
-        $keyword = $request->get('search');
-        $perPage = 25;
 
-        if (!empty($keyword)) {
-            $posts = Post::where('title', 'LIKE', "%$keyword%")
-				->orWhere('content', 'LIKE', "%$keyword%")
-				->orWhere('category', 'LIKE', "%$keyword%")
-				->orWhere('user', 'LIKE', "%$keyword%")
-				
-                ->paginate($perPage);
-        } else {
-            $posts = Post::paginate($perPage);
-        }
+        $posts = Auth()->user()->posts()->paginate(20);
 
         return view('admin.posts.index', compact('posts'));
     }
@@ -56,8 +46,8 @@ class PostsController extends Controller
     {
         
         $requestData = $request->all();
-        
-        Post::create($requestData);
+
+        Auth()->user()->posts()->create($requestData);
 
         Session::flash('flash_message', 'Post added!');
 
@@ -87,7 +77,7 @@ class PostsController extends Controller
      */
     public function edit($id)
     {
-        $post = Post::findOrFail($id);
+        $post = Auth()->user()->posts()->findOrFail($id);
 
         return view('admin.posts.edit', compact('post'));
     }
@@ -105,7 +95,7 @@ class PostsController extends Controller
         
         $requestData = $request->all();
         
-        $post = Post::findOrFail($id);
+        $post = Auth()->user()->posts()->findOrFail($id);
         $post->update($requestData);
 
         Session::flash('flash_message', 'Post updated!');
@@ -122,7 +112,7 @@ class PostsController extends Controller
      */
     public function destroy($id)
     {
-        Post::destroy($id);
+        Auth()->user()->posts()->destroy($id);
 
         Session::flash('flash_message', 'Post deleted!');
 

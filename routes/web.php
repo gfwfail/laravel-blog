@@ -11,16 +11,17 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index');
+Route::get('/', 'HomeController@index');
+
+Route::get('/posts/{id}', 'HomeController@showPost');
 
 Route::group(['middleware' => 'auth'], function () {
     Route::resource('admin/posts', 'Admin\PostsController');
+    Route::resource('admin/comments', 'Admin\CommentsController');
+
 });
 
-Route::resource('admin/comments', 'Admin\\CommentsController');
+
