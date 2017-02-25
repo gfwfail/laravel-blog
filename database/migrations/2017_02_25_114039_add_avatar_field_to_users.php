@@ -15,7 +15,7 @@ class AddAvatarFieldToUsers extends Migration
     {
        Schema::table('users', function($table)
        {
-           $table->string('avatar', 200);
+           $table->string('avatar', 200)->nullable();
        });
     }
 

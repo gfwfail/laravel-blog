@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
+use App\Notification;
 use App\Post;
 use App\User;
 use Illuminate\Http\Request;
@@ -62,6 +63,12 @@ class PostsController extends Controller
         $requestData['user_id']= auth()->user()->id;
 
         $post->comments()->create($requestData);
+
+        $notificationBody = [
+            'message' => "A user has comment your <a href='/posts/{$post->id}'>{$post->title}'</a> " ,
+            'type'=>'info'
+        ];
+        $post->user->notifications()->create($notificationBody);
 
         Session::flash('flash_message', 'Comment added!');
 

@@ -55,6 +55,23 @@
                         @else
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                    <?php
+                                    $notifications = auth()->user()->notifications;
+                                    ?>
+                                   Notifications <span class="label label-info">{{$notifications->count()}}</span> <span class="caret"></span>
+                                </a>
+
+                                <ul class="dropdown-menu" role="notifications">
+                                    @foreach($notifications as $notification)
+                                    <li>
+                                        {!! $notification->message !!}
+                                    </li>
+                                        @endforeach
+                                </ul>
+                            </li>
+
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                                     <img src="{{ Auth::user()->avatar }}" width="30" height="30" alt="" class="img-circle pull-right">
                                     {{ Auth::user()->name }} <span class="caret"></span>
                                 </a>

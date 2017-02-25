@@ -41,6 +41,11 @@ class User extends Authenticatable
         return $this->hasMany(\App\Post::class);
     }
 
+    public function notifications()
+    {
+        return $this->hasMany(\App\Notification::class);
+    }
+
     public function comments()
     {
         return $this->hasMany(\App\Comment::class);
